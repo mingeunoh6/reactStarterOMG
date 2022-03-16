@@ -10,11 +10,11 @@ import Detail from "./components/Post/Detail";
 import Edit from "./components/Post/Edit";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
+import Builder from "./routers/Builder";
 
 function App() {
   return (
     <>
-
       <Router>
         <Heading />
         <Routes>
@@ -26,6 +26,7 @@ function App() {
           <Route path="/edit/:postNum" element={<Edit />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/builder" element={<Builder />} />
         </Routes>
       </Router>
     </>
