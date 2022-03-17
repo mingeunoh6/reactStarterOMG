@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser, logoutUser } from "./reducer/userSlice";
+import firebase from "./firebase.js";
+
 import Home from "./routers/Home";
 import Heading from "./components/Heading";
 import ThreeStarter from "./routers/THREE";
@@ -13,22 +17,38 @@ import Register from "./components/User/Register";
 import Builder from "./routers/Builder";
 
 function App() {
+  const dispatch = useDispatch();
+
+  //login
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((userInfo) => {
+      if (userInfo !== null) {
+        dispatch(loginUser(userInfo.multiFactor.user));
+      } else {
+        dispatch(logoutUser());
+      }
+    });
+  }, []);
+
+  // //logout
+  // useEffect(() => {
+  //   firebase.auth().signOut();
+  // }, []);
+
   return (
     <>
-      <Router>
-        <Heading />
-        <Routes>
-          <Route path="/" element={<ThreeStarter />} />
-          <Route path="postTest" element={<Posttest />} />
-          <Route path="scroll" element={<Scrollcalculator />} />
-          <Route path="postList" element={<PostList />} />
-          <Route path="/post/:postNum" element={<Detail />} />
-          <Route path="/edit/:postNum" element={<Edit />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/builder" element={<Builder />} />
-        </Routes>
-      </Router>
+      <Heading />
+      <Routes>
+        <Route path="/" element={<ThreeStarter />} />
+        <Route path="postTest" element={<Posttest />} />
+        <Route path="scroll" element={<Scrollcalculator />} />
+        <Route path="postList" element={<PostList />} />
+        <Route path="/post/:postNum" element={<Detail />} />
+        <Route path="/edit/:postNum" element={<Edit />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/builder" element={<Builder />} />
+      </Routes>
     </>
   );
 }
