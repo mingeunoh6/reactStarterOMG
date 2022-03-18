@@ -11,6 +11,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [flag, setFlag] = useState(false);
+  const [nameCheck, setNameCheck] = useState(false)
+  const [nameInfo, setNameInfo] = useState("")
 
   let navigate = useNavigate();
 
@@ -23,6 +25,11 @@ const Register = () => {
     if (password !== passwordCheck) {
       return alert("password not match");
     }
+
+    if (!nameCheck) {
+      return alert("닉네임 중복검사좀")
+    }
+
     let createdUser = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
@@ -48,10 +55,41 @@ const Register = () => {
     });
   };
 
+
+  const nameCheckFunc = (e) => {
+
+    e.preventDefault();
+    if (!name) {
+      return alert("닉네임 입력해")
+    }
+
+    let body = {
+      displayName: name
+    }
+
+    axios.post("/api/user/nameCheck", body).then((response) => {
+      if (response.data.success) {
+        if (response.data.check) {
+          setNameCheck(true)
+          setNameInfo("사용 가능")
+        } else {
+          setNameInfo("사용 불가")
+        }
+
+      }
+    })
+
+  }
+
   return (
     <div>
-      <label>name</label>
-      <input type="name" onChange={(e) => setName(e.currentTarget.value)} />
+      <div>
+        <label>nickname</label>
+        <input type="name" onChange={(e) => setName(e.currentTarget.value)} />
+        <button onClick={nameCheckFunc}>닉네임 중복검사</button>
+        {nameInfo}
+      </div>
+
       <label>email</label>
       <input type="email" onChange={(e) => setEmail(e.currentTarget.value)} />
       <label>password</label>
@@ -66,7 +104,7 @@ const Register = () => {
         minLength={8}
         onChange={(e) => setPasswordCheck(e.currentTarget.value)}
       />
-      <button disabled={flag} onClick={RegisterFunc}>
+      <button onClick={RegisterFunc}>
         sign up
       </button>
     </div>

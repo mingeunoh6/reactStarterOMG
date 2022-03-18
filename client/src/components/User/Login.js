@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import firebase from "../../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/compat/auth";
 
 const Login = () => {
+
+  const user = useSelector((state) => state.user);
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -57,7 +62,7 @@ const Login = () => {
             navigate("/register");
           }}
         >
-          Go
+          signUp
         </button>
       </form>
     </div>

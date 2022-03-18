@@ -22,13 +22,30 @@ router.post("/register", (req, res) => {
         })
     }).catch((err) => {
         console.log(err);
-        res.statue(400).json({ success: false })
+        res.status(400).json({ success: false })
     })
 
 })
 
 
 
+
+
+router.post("/nameCheck", (req, res) => {
+
+    User.findOne({ displayName: req.body.displayName }).exec().then((doc) => {
+        let check = true;
+        if (doc) {
+            check = false;
+        }
+        res.status(200).json({ success: true, check })
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).json({ success: false })
+    })
+
+
+})
 
 
 
