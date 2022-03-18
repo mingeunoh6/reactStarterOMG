@@ -21,10 +21,12 @@ const PostList = () => {
       <h1>Posts</h1>
       <div>
         {posts.map((postItem, id) => {
+          console.log(postItem);
           return (
             <div key={id}>
               <Link to={`/post/${postItem.postNum}`}>
                 <h1>{postItem.title}</h1>
+                <p>{postItem.author.displayName}</p>
                 <p>{postItem.content}</p>
               </Link>
             </div>

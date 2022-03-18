@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 export default function Detail() {
@@ -16,7 +17,7 @@ export default function Detail() {
       .then((response) => {
         response.data.success
           ? (function () {
-              console.log("good");
+              console.log("서버에서 디테일로 응답이 잘 왔음");
               setFlag(true);
               setPostInfo(response.data.postInfo);
             })()
@@ -40,12 +41,17 @@ export default function Detail() {
     }
   };
 
+  console.log("서버에서 온 디테일 포스트 데이터:", postInfo);
+
   return (
     <div>
       <h1>Detail</h1>
       {Flag ? (
         <div>
           <h2>title:{postInfo.title}</h2>
+          {/* /문제가 시작된 부분 */}
+          <h3>writer:{postInfo.author.displayName}</h3>
+
           {postInfo.image ? <img src={``} alt="" /> : null}
           <img
             src={postInfo.image}

@@ -1,7 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "../style/Poststyle";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ImageUpload from "../components/Post/ImageUpload";
 
 import axios from "axios";
@@ -11,7 +12,15 @@ const Posttest = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState();
 
+  const user = useSelector((state) => state.user);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user.accessToken) {
+      alert("로그인하세요");
+      navigate("/login");
+    }
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +33,10 @@ const Posttest = () => {
       title: title,
       content: content,
       image: image,
+      uid: user.uid,
     };
+
+    console.log(body);
 
     axios
       .post("api/post/submit", body)
