@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import axios from "axios";
 
-export default function Detail() {
-  const [postInfo, setPostInfo] = useState([]);
 
+
+
+function Detail() {
+  const [postInfos, setPostInfos] = useState({});
+  const user = useSelector((state) => state.user)
   const [Flag, setFlag] = useState(false);
 
   let navigate = useNavigate();
   let params = useParams();
 
   useEffect(() => {
-    axios
-      .post("/api/post/detail", params)
-      .then((response) => {
-        response.data.success
-          ? (function () {
-              console.log("서버에서 디테일로 응답이 잘 왔음");
-              setFlag(true);
-              setPostInfo(response.data.postInfo);
-            })()
-          : (function () {
-              console.log("bad");
-            })();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    let body = {
+      postNum: params.postNum,
+    }
+
+    axios.post('/api/post/detail', body).then((response) => {
+      if (response.data.success) {
+        setPostInfos(response.data.postInfo);
+        setFlag(true)
+      }
+
+    }).catch((err) => {
+      console.log(err);
+    })
+
+
+
+  }, [])
 
   const DeleteHandler = () => {
     if (window.confirm("정말로 삭제")) {
@@ -41,29 +44,40 @@ export default function Detail() {
     }
   };
 
-  console.log("서버에서 온 디테일 포스트 데이터:", postInfo);
 
   return (
     <div>
       <h1>Detail</h1>
       {Flag ? (
         <div>
-          <h2>title:{postInfo.title}</h2>
+          <h2>title:{postInfos.title}</h2>
           {/* /문제가 시작된 부분 */}
-          <h3>writer:{postInfo.author.displayName}</h3>
+          <h3>writer:{postInfos.author.displayName}</h3>
 
-          {postInfo.image ? <img src={``} alt="" /> : null}
-          <img
-            src={postInfo.image}
-            alt="image"
-            style={{ width: "100%", height: "auto" }}
-          />
-          <p>content: {postInfo.content}</p>
-          <Link to={`/edit/${postInfo.postNum}`}>
-            <button>edit</button>
-          </Link>
+          {postInfos.image ? (
+            <img
+              src={postInfos.image}
+              alt="postedImage"
+              style={{ width: "100%", height: "auto" }}
+            />) : null}
 
-          <button onClick={DeleteHandler}>delete</button>
+          <p>content: {postInfos.content}</p>
+
+
+
+          {user.uid === postInfos.author.uid && (
+
+            <div>
+              <Link to={`/edit/${postInfos.postNum}`}>
+                <button>edit</button>
+              </Link>
+
+              <button onClick={DeleteHandler}>delete</button>
+            </div>
+
+          )}
+
+
         </div>
       ) : (
         <div>
@@ -73,3 +87,6 @@ export default function Detail() {
     </div>
   );
 }
+
+
+export default Detail;

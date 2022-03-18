@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const ImageUpload = (props) => {
-  const [files, setFiles] = useState();
+  const [files, setFiles] = useState({});
   const FileUpload = (e) => {
     const formData = new FormData();
 

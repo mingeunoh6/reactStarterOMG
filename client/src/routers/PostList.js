@@ -3,25 +3,42 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const PostList = () => {
+
   const [posts, setPosts] = useState([]);
 
+
   useEffect(() => {
+
+    let isApiSubscribed = true;
+
     axios
       .post("/api/post/list")
       .then((response) => {
-        setPosts([...response.data.postList]);
+        if (isApiSubscribed) {
+          if (response.data.success) {
+            setPosts([...response.data.postList]);
+          }
+        }
+
       })
       .catch((err) => {
         console.log(err);
       });
+    return () => {
+      // cancel the subscription
+      isApiSubscribed = false;
+    };
   }, []);
+
+
+
 
   return (
     <div>
       <h1>Posts</h1>
       <div>
-        {posts.map((postItem, id) => {
-          console.log(postItem);
+        {posts === [] ? <h1>Empty</h1> : posts.map((postItem, id) => {
+
           return (
             <div key={id}>
               <Link to={`/post/${postItem.postNum}`}>

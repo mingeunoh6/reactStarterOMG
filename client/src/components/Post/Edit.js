@@ -5,7 +5,7 @@ import axios from "axios";
 import ImageUpload from "./ImageUpload";
 
 const Edit = () => {
-  const [postInfo, setPostInfo] = useState([]);
+  const [postInfo, setPostInfo] = useState({});
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState();
@@ -19,11 +19,11 @@ const Edit = () => {
       .then((response) => {
         response.data.success
           ? (function () {
-              setPostInfo(response.data.postInfo);
-            })()
+            setPostInfo(response.data.postInfo);
+          })()
           : (function () {
-              console.log("bad");
-            })();
+            console.log("bad");
+          })();
       })
       .catch((err) => {
         console.log(err);
