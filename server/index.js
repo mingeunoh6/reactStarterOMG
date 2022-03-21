@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/image", express.static("./image"));
 app.use("/api/post", require("./Router/post"));
 app.use("/api/user", require("./Router/user"));
+app.use("/api/comment", require("./Router/comments"));
 
 
 app.listen(port, () => {

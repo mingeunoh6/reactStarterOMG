@@ -6,11 +6,16 @@ const postSchema = new mongoose.Schema(
     content: String,
     postNum: Number,
     image: String,
+    commentNum: Number,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       //ref에는 받아올 스키마 정보.
     },
+    postId: {
+      type: Number,
+      default: 0,
+    }
   },
   { collection: "posts" }
 );

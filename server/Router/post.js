@@ -5,6 +5,7 @@ const multer = require("multer");
 const { Post } = require("../Model/Post.js");
 const { Counter } = require("../Model/Counter.js");
 const { User } = require("../Model/User.js");
+const { Comments } = require("../Model/Comments.js")
 
 const setUpload = require("../util/upload");
 
@@ -133,4 +134,6 @@ router.post(
   }
 );
 
+
 module.exports = router;
+
