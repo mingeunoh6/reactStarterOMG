@@ -1,14 +1,16 @@
-import React from 'react';
-import CommentUpload from './CommentUpload';
-import CommentList from './CommentList';
+import React from "react";
+import CommentUpload from "./CommentUpload";
+import CommentList from "./CommentList";
+import { useSelector } from "react-redux";
 
 const CommentArea = (props) => {
-    return (
-        <div>
-            <CommentUpload postId={props.postId} />
-            <CommentList />
-        </div>
-    );
+  const user = useSelector((state) => state.user);
+  return (
+    <div>
+      <CommentUpload postId={props.postId} />
+      <CommentList postId={props.postId} />
+    </div>
+  );
 };
 
 export default CommentArea;
