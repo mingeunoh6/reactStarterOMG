@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser, logoutUser } from "./reducer/userSlice";
 import firebase from "./firebase.js";
-
-import Home from "./routers/Home";
+import { Global } from "@emotion/react";
 import Heading from "./components/Heading";
 import ThreeStarter from "./routers/THREE";
 import Posttest from "./routers/Posttest";
@@ -15,6 +14,8 @@ import Edit from "./components/Post/Edit";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
 import Builder from "./routers/Builder";
+import GridLayout from "./testComponents/GridLayout";
+import GlobalCssReset from "./style/global/reset";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
 
   return (
     <>
+      <Global styles={GlobalCssReset} />
       <Heading />
       <Routes>
         <Route path="/" element={<ThreeStarter />} />
@@ -48,6 +50,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/builder" element={<Builder />} />
+        <Route path="/grid" element={<GridLayout />} />
       </Routes>
     </>
   );

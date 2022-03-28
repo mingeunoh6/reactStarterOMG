@@ -13,24 +13,19 @@ const Heading = () => {
     navigate("/");
   };
 
-
-
   return (
     <div>
       <h1>OMG TEST</h1>
       <div>
         <Link to="/">Home </Link>
-        {
-          user.accessToken ? <Link to="/postTest">Post </Link> : null
-        }
+        {user.accessToken ? <Link to="/postTest">Post </Link> : null}
         {/* 
         <Link to="/postTest">Post </Link> */}
         <Link to="/PostList">List </Link>
-        {
-          user.accessToken ? null : <Link to="/Register">Register </Link>
-        }
+        {user.accessToken ? null : <Link to="/Register">Register </Link>}
 
         <Link to="/Builder">Builder </Link>
+        <Link to="/Grid">GridTester </Link>
       </div>
       <div>
         {user.accessToken ? (
