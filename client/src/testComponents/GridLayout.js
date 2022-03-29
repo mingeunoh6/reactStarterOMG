@@ -1,85 +1,80 @@
+/** @jsxImportSource @emotion/react */
 import React from "react";
-import styled from "@emotion/styled";
 
-const Wrapper = styled.div`
-  background-color: aliceblue;
-  height: 1200px;
-  display: flex;
-  justify-content: space-between;
-  & > div {
-    border: 1px solid black;
-    min-height: 100%;
-  }
-`;
+import { css, jsx, ClassName } from "@emotion/react";
+import useInput from "../hooks/useInput";
+import {
+  Wrapper,
+  LeftPanel,
+  RightPanel,
+  CenterArea,
+  PanelItem,
+  InputArea,
+  Layout,
+} from "./GridLayoutStyle";
 
-const LeftPanel = styled.div`
-  width: 300px;
-`;
-
-const RightPanel = styled.div`
-  width: 300px;
-`;
-
-const CenterArea = styled.div`
-  flex-grow: 1;
-`;
-
-const PanelItem = styled.div`
-  padding: 10px;
-
-  & h2 {
-    margin-bottom: 10px;
-  }
-`;
-
-const Input = styled.div`
-  border: 1px solid black;
-  padding: 2px;
-  display: flex;
-  justify-content: space-between;
-  & {
-    input,
-    label {
-      width: 50%;
-      margin: 4px;
-    }
-  }
-`;
+import GridBoard from "./GridBoard";
 
 const GridLayout = () => {
-  return (
-    <Wrapper>
-      <LeftPanel>왼쪽</LeftPanel>
-      <CenterArea></CenterArea>
+  const [columnInput, onChangeColumnInput, resetColumnInput] = useInput("2");
+  const [rowInput, onChangeRowInput, resetRowInput] = useInput("2");
+  const [columnGap, onChangeColumnGap, resetColumnGap] = useInput("5");
+  const [rowGap, onChangeRowGap, resetRowGap] = useInput("5");
 
-      <RightPanel>
-        <PanelItem>
-          <h2>BORDER</h2>
-          <div className="item-1">
-            <Input>
-              <label for="ColumnInput">가로단</label>
-              <input id="ColumnInput" type="number"></input>
-            </Input>
-            <Input>
-              <label for="RowInput">세로단</label>
-              <input id="RowInput" type="number"></input>
-            </Input>
-            <Input>
-              <label for="ColumnGap">가로간격</label>
-              <input id="ColumnGap" type="number"></input>
-            </Input>
-            <Input>
-              <label for="RowGap">세로간격</label>
-              <input id="RowGap" type="number"></input>
-            </Input>
-          </div>
-        </PanelItem>
-        <hr />
-        <PanelItem>
-          <h2>CONTENTS</h2>
-        </PanelItem>
-      </RightPanel>
-    </Wrapper>
+  return (
+    <>
+      <Wrapper>
+        <LeftPanel>왼쪽</LeftPanel>
+        <CenterArea>
+          <Layout>
+            <GridBoard column={columnInput} row={rowInput} />
+          </Layout>
+        </CenterArea>
+
+        <RightPanel>
+          <h1>BOARD</h1>
+
+          <PanelItem>
+            <h2>BORDER-1</h2>
+            <div className="item-1">
+              <InputArea
+                title="가로단"
+                id="columnInput"
+                type="number"
+                value={columnInput}
+                onChange={onChangeColumnInput}
+              />
+              <InputArea
+                title="세로단"
+                id="rowInput"
+                type="number"
+                value={rowInput}
+                onChange={onChangeRowInput}
+              />
+
+              <InputArea
+                title="가로간격"
+                id="ColumnGap"
+                type="number"
+                value={columnGap}
+                onChange={onChangeColumnGap}
+              />
+              <InputArea
+                title="세로간격"
+                id="RowGap"
+                type="number"
+                value={rowGap}
+                onChange={onChangeRowGap}
+              />
+            </div>
+          </PanelItem>
+          <hr />
+          <PanelItem>
+            <h2>CONTENTS</h2>
+          </PanelItem>
+        </RightPanel>
+      </Wrapper>
+    </>
   );
 };
 
