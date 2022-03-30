@@ -8,18 +8,62 @@ import PropTypes from "prop-types";
 import { Children } from "react";
 
 const Wrapper = styled.div`
+  font-size: 15px;
   background-color: aliceblue;
   height: 1200px;
   display: flex;
+  flex-direction: row;
+  align-content: center;
   justify-content: space-between;
   & > div {
     border: 1px solid black;
     min-height: 100%;
   }
+  h1 {
+    font-size: 2.3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  p {
+    font-size: 1rem;
+  }
 `;
 
 const LeftPanel = styled.div`
   width: 300px;
+  background-color: yellow;
+  & .Lp-Wrapper {
+    background-color: red;
+    border: 1px solid black;
+
+    padding: 10px;
+  }
+  & .Lp-section {
+    padding: 2px;
+    width: 100%;
+    background-color: chocolate;
+  }
+  & .Lp-ItemBox {
+    padding: 5px;
+    border: 1px solid black;
+    & .List-Itme {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid black;
+    }
+    & .List-Item-icon-group {
+      display: flex;
+      border: 1px solid black;
+      justify-content: flex-end;
+      & > div {
+        margin-left: 5px;
+      }
+    }
+  }
 `;
 
 const RightPanel = styled.div`
@@ -29,10 +73,9 @@ const RightPanel = styled.div`
 
 const CenterArea = styled.div`
   position: relative;
-  width: 100%;
+  flex-grow: 1;
   height: 100%;
   text-align: center;
-  flex-grow: 1;
 `;
 
 const PanelItem = styled.div`

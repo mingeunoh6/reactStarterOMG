@@ -24,7 +24,35 @@ const GridLayout = () => {
   return (
     <>
       <Wrapper>
-        <LeftPanel>왼쪽</LeftPanel>
+        <LeftPanel>
+          <div className="Lp-Wrapper">
+            <div className="Lp-section">
+              <div className="title">
+                <h1>Untitle</h1>
+              </div>
+            </div>
+            <div className="Lp-section">
+              <div className="Sub-title">
+                <h2>
+                  Board List<span>(num)</span>
+                </h2>
+              </div>
+              <div className="Lp-ItemBox">
+                <ul className="Item-List">
+                  <li>
+                    <div className="List-Itme">
+                      <h3>board001</h3>
+                      <div className="List-Item-icon-group">
+                        <div>edit</div>
+                        <div>delete</div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </LeftPanel>
         <CenterArea>
           <Layout>
             <GridBoard column={columnInput} row={rowInput} />
