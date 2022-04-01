@@ -19,11 +19,11 @@ const Edit = () => {
       .then((response) => {
         response.data.success
           ? (function () {
-            setPostInfo(response.data.postInfo);
-          })()
+              setPostInfo(response.data.postInfo);
+            })()
           : (function () {
-            console.log("bad");
-          })();
+              console.log("bad");
+            })();
       })
       .catch((err) => {
         console.log(err);
