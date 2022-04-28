@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 
-import { css, jsx, ClassName } from "@emotion/react";
-import useInput from "../hooks/useInput";
+import { css, cx, jsx, ClassName } from "@emotion/react";
+
 import {
   Wrapper,
   LeftPanel,
@@ -16,13 +17,71 @@ import {
 import GridBoard from "./GridBoard";
 
 const GridLayout = () => {
-  const [columnInput, onChangeColumnInput, resetColumnInput] = useInput("2");
-  const [rowInput, onChangeRowInput, resetRowInput] = useInput("2");
-  const [columnGap, onChangeColumnGap, resetColumnGap] = useInput("5");
-  const [rowGap, onChangeRowGap, resetRowGap] = useInput("5");
+  const currentGridCell = useSelector((state) => state.test);
+
+  console.log("reducer", currentGridCell.cellId);
+
+  const [columnInput, setColumnInput] = useState("2");
+  const [rowInput, setRowInput] = useState("2");
+  const [columnGap, setColumnGap] = useState("5");
+  const [rowGap, setRowGap] = useState("5");
+
+  const onChangeColumnInput = useCallback(
+    (e) => {
+      console.log("newColumn");
+      setColumnInput(e.target.value);
+    },
+    [columnInput]
+  );
+
+  const onChangeRowInput = useCallback(
+    (e) => {
+      console.log("newRow");
+      setRowInput(e.target.value);
+    },
+    [rowInput]
+  );
+
+  const onChangeColumnGap = useCallback(
+    (e) => {
+      console.log("newColumn Gap");
+      setColumnGap(e.target.value);
+    },
+    [columnGap]
+  );
+
+  const onChangeRowGap = useCallback(
+    (e) => {
+      console.log("newRow Gap");
+      setRowGap(e.target.value);
+    },
+    [rowGap]
+  );
+
+  const cellSelection = (cell) => {
+    return (
+      <>
+        <p>{cell}</p>
+      </>
+    );
+  };
+
+  const tempImg = (cell) => {
+    let targetCell = document.querySelector(`#${cell}`);
+
+    let imgElement = document.createElement("div");
+    imgElement.textContent = "image";
+    targetCell.append(imgElement);
+  };
+
+  const addImage = () => {
+    console.log(currentGridCell.cellId, "에 image 추가");
+    tempImg(currentGridCell.cellId);
+  };
 
   return (
     <>
+      CSStest
       <Wrapper>
         <LeftPanel>
           <div className="Lp-Wrapper">
@@ -55,15 +114,21 @@ const GridLayout = () => {
         </LeftPanel>
         <CenterArea>
           <Layout>
-            <GridBoard column={columnInput} row={rowInput} />
+            <GridBoard
+              column={columnInput}
+              row={rowInput}
+              columnGap={columnGap}
+              rowGap={rowGap}
+            />
           </Layout>
         </CenterArea>
 
         <RightPanel>
-          <h1>BOARD</h1>
-
+          <h2>Board001</h2>
+          <hr />
           <PanelItem>
-            <h2>BORDER-1</h2>
+            <h3>Grid setting</h3>
+            <hr />
             <div className="item-1">
               <InputArea
                 title="가로단"
@@ -98,7 +163,30 @@ const GridLayout = () => {
           </PanelItem>
           <hr />
           <PanelItem>
-            <h2>CONTENTS</h2>
+            <h3>Cell Selection</h3>
+            <hr />
+            {currentGridCell.cellId ? (
+              cellSelection(currentGridCell.cellId)
+            ) : (
+              <p>none</p>
+            )}
+            <hr />
+            <div>
+              <div
+                css={css`
+                  margin: 10px;
+                  padding: 10px;
+                  background-color: #eee;
+                  cursor: pointer;
+                  &:hover {
+                    color: red;
+                  }
+                `}
+                onClick={addImage}
+              >
+                Image
+              </div>
+            </div>
           </PanelItem>
         </RightPanel>
       </Wrapper>

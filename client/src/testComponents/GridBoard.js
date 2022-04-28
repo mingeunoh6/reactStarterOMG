@@ -1,50 +1,92 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  createRef,
+} from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrnetGrid, emptyCurrnetGrid } from "../reducer/testerSlice";
 import styled from "@emotion/styled";
-import { css, jsx, ClassName } from "@emotion/react";
 import PropTypes from "prop-types";
 
-const GridBoard = ({ column, row }) => {
+const GridBoard = ({ column, row, columnGap, rowGap }) => {
+  const selectedCell = useRef(null);
+
+  const dispatch = useDispatch();
+  const activeCell = useSelector((state) => state.test);
+  const cssGridLayoutWrapper = useRef(null);
   const [columnGrid, setColumGrid] = useState([]);
+  const [currentCell, setCurrentCell] = useState({});
 
   useEffect(() => {
-    const abortController = new AbortController();
-    setColumGrid([]);
-    const girdItem = {
-      column,
-      row,
+    console.log("컴포넌트가 화면에 나타남");
+
+    return () => {
+      console.log("컴포넌트가 화면에서 사라짐");
     };
-    for (let i = 0; i < column; i++) {
-      girdItem.column = i;
-      for (let j = 0; j < row; j++) {
-        girdItem.row = j;
-        console.log(girdItem);
-        setColumGrid([columnGrid, girdItem]);
+  }, [column, row, columnGap, rowGap]);
+
+  //Catch current Grid Cell
+  const onPointCellCheck = (e) => {
+    dispatch(setCurrnetGrid(e.target.id));
+  };
+
+  //Create Grid Cell
+  const createCell = useCallback(() => {
+    let newGridCellList = [];
+    let newCellItem;
+
+    for (let i = 1; i < parseInt(column) + 1; i++) {
+      for (let j = 1; j < parseInt(row) + 1; j++) {
+        newCellItem = (
+          <CssBoardGridCell
+            rowNumb={j}
+            colNumb={i}
+            key={`${i}${j}`}
+            id={`gridCell-${i}${j}`}
+            onClick={onPointCellCheck}
+          />
+        );
+        newGridCellList.push(newCellItem);
       }
     }
-    return function cleanup() {
-      console.log("I am in cleanup function");
-      abortController.abort();
-    };
-  }, [column, row]);
+    return newGridCellList.map((cell) => cell);
+  }, [column, row, columnGap, rowGap]);
 
-  console.log("ss", columnGrid);
+  //grid-area: grid-row-start , grid-column-start,grid-row-end , grid-column-end
+  //if row==3 => grid-row => 1,2,3
+  //each-cell -> grid area => row i, column j, auto, auto
 
-  const boardCSS = css`
+  const CssBoardGrid = styled.div`
     display: grid;
-    padding: 5px;
-    background-color: yellow;
+    border: 1px solid red;
     height: 100%;
     width: 100%;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    & > div {
-      border: 1px solid black;
-    }
+    grid-template-columns: ${(props) => `repeat(${props.columns}, 1fr)`};
+    grid-template-rows: ${(props) => `repeat(${props.rows}, 1fr)`};
+    column-gap: ${(props) => ` ${props.columnGap}px`};
+    row-gap: ${(props) => `${props.rowGap}px`};
   `;
+
+  const CssBoardGridCell = styled.div`
+    grid-area: ${(props) => `${props.rowNumb}/${props.colNumb}/auto/auto`};
+    height: 100%;
+    width: 100%;
+    border: 1px solid white;
+  `;
+
   return (
     <>
-      <div css={boardCSS}></div>
+      <CssBoardGrid
+        columns={column}
+        rows={row}
+        columnGap={columnGap}
+        rowGap={rowGap}
+        ref={cssGridLayoutWrapper}
+      >
+        {column && row && columnGap && rowGap ? createCell() : null}
+      </CssBoardGrid>
     </>
   );
 };

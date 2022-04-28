@@ -106,7 +106,7 @@ const Layout = styled.div`
   top: 50%;
   width: 50%;
   height: 80%;
-  background-color: green;
+  background-color: blue;
 `;
 
 const InputArea = ({ title, id, type, value, onChange }) => {
