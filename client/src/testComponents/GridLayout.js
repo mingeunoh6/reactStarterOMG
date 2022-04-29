@@ -15,6 +15,7 @@ import {
 } from "./GridLayoutStyle";
 
 import GridBoard from "./GridBoard";
+import CellEditor from "./Components/CellEditor";
 
 const GridLayout = () => {
   const currentGridCell = useSelector((state) => state.test);
@@ -58,30 +59,8 @@ const GridLayout = () => {
     [rowGap]
   );
 
-  const cellSelection = (cell) => {
-    return (
-      <>
-        <p>{cell}</p>
-      </>
-    );
-  };
-
-  const tempImg = (cell) => {
-    let targetCell = document.querySelector(`#${cell}`);
-
-    let imgElement = document.createElement("div");
-    imgElement.textContent = "image";
-    targetCell.append(imgElement);
-  };
-
-  const addImage = () => {
-    console.log(currentGridCell.cellId, "에 image 추가");
-    tempImg(currentGridCell.cellId);
-  };
-
   return (
     <>
-      CSStest
       <Wrapper>
         <LeftPanel>
           <div className="Lp-Wrapper">
@@ -162,32 +141,7 @@ const GridLayout = () => {
             </div>
           </PanelItem>
           <hr />
-          <PanelItem>
-            <h3>Cell Selection</h3>
-            <hr />
-            {currentGridCell.cellId ? (
-              cellSelection(currentGridCell.cellId)
-            ) : (
-              <p>none</p>
-            )}
-            <hr />
-            <div>
-              <div
-                css={css`
-                  margin: 10px;
-                  padding: 10px;
-                  background-color: #eee;
-                  cursor: pointer;
-                  &:hover {
-                    color: red;
-                  }
-                `}
-                onClick={addImage}
-              >
-                Image
-              </div>
-            </div>
-          </PanelItem>
+          <CellEditor cell={currentGridCell} />
         </RightPanel>
       </Wrapper>
     </>
