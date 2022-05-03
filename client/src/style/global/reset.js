@@ -88,6 +88,7 @@ const GlobalCssReset = css`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    box-sizing: border-box;
   }
   /* HTML5 display-role reset for older browsers */
   article,
@@ -102,8 +103,10 @@ const GlobalCssReset = css`
   nav,
   section {
     display: block;
+    box-sizing: border-box;
   }
   body {
+    box-sizing: border-box;
     line-height: 1;
   }
   ol,
@@ -130,6 +133,7 @@ const GlobalCssReset = css`
   body {
     width: 100vw;
     height: 100vh;
+    box-sizing: border-box;
     overflow: hidden;
   }
 

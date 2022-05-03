@@ -16,6 +16,19 @@ import Register from "./components/User/Register";
 import Builder from "./routers/Builder";
 import GridLayout from "./testComponents/GridLayout";
 import GlobalCssReset from "./style/global/reset";
+import styled from "@emotion/styled";
+import { css, jsx, ClassName } from "@emotion/react";
+
+const BodyWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  & .mainWrapper {
+    align-self: stretch;
+    flex-grow: 1;
+  }
+`;
 
 function App() {
   const dispatch = useDispatch();
@@ -39,19 +52,23 @@ function App() {
   return (
     <>
       <Global styles={GlobalCssReset} />
-      <Heading />
-      <Routes>
-        <Route path="/" element={<ThreeStarter />} />
-        <Route path="postTest" element={<Posttest />} />
-        <Route path="scroll" element={<Scrollcalculator />} />
-        <Route path="postList" element={<PostList />} />
-        <Route path="/post/:postNum" element={<PostArea />} />
-        <Route path="/edit/:postNum" element={<Edit />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/builder" element={<Builder />} />
-        <Route path="/grid" element={<GridLayout />} />
-      </Routes>
+      <BodyWrapper>
+        <Heading />
+        <section class="mainWrapper">
+          <Routes>
+            <Route path="/" element={<ThreeStarter />} />
+            <Route path="postTest" element={<Posttest />} />
+            <Route path="scroll" element={<Scrollcalculator />} />
+            <Route path="postList" element={<PostList />} />
+            <Route path="/post/:postNum" element={<PostArea />} />
+            <Route path="/edit/:postNum" element={<Edit />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/builder" element={<Builder />} />
+            <Route path="/grid" element={<GridLayout />} />
+          </Routes>
+        </section>
+      </BodyWrapper>
     </>
   );
 }

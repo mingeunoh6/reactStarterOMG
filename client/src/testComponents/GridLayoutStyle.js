@@ -9,17 +9,14 @@ import { Children } from "react";
 
 const Wrapper = styled.div`
   font-size: 15px;
-  background-color: aliceblue;
-  height: 1200px;
+
+  height: 100%;
+
   display: flex;
   flex-direction: row;
-  align-content: center;
+
   justify-content: space-between;
-  & > div {
-    border: 1px solid black;
-    min-height: 100%;
-  }
-  h1 {
+  & > h1 {
     font-size: 2.3rem;
   }
   h2 {
@@ -34,18 +31,49 @@ const Wrapper = styled.div`
 `;
 
 const LeftPanel = styled.div`
-  width: 300px;
-  background-color: yellow;
-  & .Lp-Wrapper {
-    background-color: red;
-    border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 400px;
 
-    padding: 10px;
+  border: 1px solid red;
+
+  & .Lp-Wrapper {
+    max-width: 400px;
+    background-color: white;
+    align-self: stretch;
+  }
+  & #Lp-panel1 {
+    min-height: 250px;
+    max-height: 300px;
+    order: 1;
+    flex-grow: 1;
+  }
+  & #Lp-panel2 {
+    order: 2;
+    min-height: 300px;
+
+    flex-grow: 2;
+    flex-shrink: 1;
+  }
+  & #Lp-panel3 {
+    min-height: 284px;
+    order: 3;
+
+    flex-shrink: 1;
+    border-bottom: 1px solid green;
   }
   & .Lp-section {
-    padding: 2px;
+    padding: 10px;
     width: 100%;
-    background-color: chocolate;
+    height: 100%;
+    border: 1px solid black;
+    background-color: white;
+    box-sizing: border-box;
+    & .title {
+      font-size: 2.2rem;
+    }
   }
   & .Lp-ItemBox {
     padding: 5px;
@@ -67,6 +95,7 @@ const LeftPanel = styled.div`
 `;
 
 const RightPanel = styled.div`
+  border: 1px solid black;
   width: 300px;
   padding: 5px;
 `;
