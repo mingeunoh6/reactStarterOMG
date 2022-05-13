@@ -6,23 +6,43 @@ import axios from "axios";
 const CommentContent = (props) => {
   const [editText, setEditText] = useState(props.comment);
   const user = useSelector((state) => state.user);
-  const ref = useRef();
   const [isModalOpen, setModalOpen] = useState(false);
+
   const [modalFlag, setModalFlag] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const ref = useRef();
+
 
   const onChangeEdit = (e) => {
     setEditText(e.target.value);
   };
 
   const onCancel = (e) => {
-    setEditText(props.comment);
+    e.preventDefault()
     setIsEdit(false);
+    setEditText(props.comment);
+
   };
 
   const onSubmitComment = (e) => {
     e.preventDefault();
-    window.location.reload();
+    let body = {
+      uid: user.uid,
+      comment: editText,
+      postId: props.comment.postId,
+      commentId: props.comment._id
+    }
+    axios.post("/api/comment/edit", body).then((response) => {
+      if (response.data.success) {
+        alert("댓글수정 성공")
+      } else {
+        alert("댓글수정실패")
+      }
+      window.location.reload();
+    })
+
+
+
   };
 
   useOnClickOutside(ref, () => setModalFlag(false));
@@ -39,6 +59,7 @@ const CommentContent = (props) => {
               <div
                 onClick={() => {
                   setIsEdit(true);
+                  setModalFlag(false);
                 }}
               >
                 edit
