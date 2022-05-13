@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import Controller from "../components/R3f/Controller";
 import {
   AnimationClip,
   BooleanKeyframeTrack,
@@ -19,21 +20,33 @@ const ThreeEditFrame = styled.div`
   height: 100%;
   position: relative;
   display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
 `;
 const ThreeScreen = styled.div`
   position: relative;
+  flex: none;
+  max-width: 80%;
+  min-width: 20%;
+  height: 100%;
 
+  flex-grow: 0;
+  align-self: stretch;
   background-color: black;
   & canvas {
     height: 100%;
+    width: 100%;
   }
 `;
 
 const ThreeAnimator = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  height: 30%;
+  position: relative;
+  flex: none;
+  flex-grow: 2;
+  min-width: 30%;
+  max-width: 40%;
+  align-self: stretch;
   background-color: ivory;
 `;
 
@@ -72,7 +85,8 @@ const ThreeStarter = () => {
     <>
       <ThreeEditFrame>
         <ThreeScreen>
-          <Canvas camera={{ position: [5, 0, -5] }}>
+          <Controller />
+          <Canvas camera={{ position: [0, 1, -10] }}>
             <OrbitControls />
             <ambientLight intensity={1} />
             <spotLight position={[10, 15, 10]} angle={0.3} />
@@ -88,41 +102,42 @@ const ThreeStarter = () => {
           {Object.keys(currentObject).length === 0 ? (
             <h1>No target</h1>
           ) : (
-            <h1>{currentObject.uuid}</h1>
+            <>
+              <h1>{currentObject.uuid}</h1>
+              <div>
+                <fieldset>
+                  <legend>Rotate:</legend>
+                  <label htmlFor="rotateX">rotateX</label>
+
+                  <input
+                    id="rotateX"
+                    value={rotateX}
+                    onChange={onChangeRotateX}
+                    type="number"
+                  />
+                  <br />
+                  <label htmlFor="rotateY">rotateY</label>
+
+                  <input
+                    id="rotateY"
+                    value={rotateY}
+                    onChange={onChangeRotateY}
+                    type="number"
+                  />
+                  <br />
+                  <label htmlFor="rotateZ">rotateZ</label>
+
+                  <input
+                    id="rotateZ"
+                    value={rotateZ}
+                    onChange={onChangeRotateZ}
+                    type="number"
+                  />
+                  <br />
+                </fieldset>
+              </div>
+            </>
           )}
-
-          <div>
-            <fieldset>
-              <legend>Rotate:</legend>
-              <label htmlFor="rotateX">rotateX</label>
-
-              <input
-                id="rotateX"
-                value={rotateX}
-                onChange={onChangeRotateX}
-                type="number"
-              />
-              <br />
-              <label htmlFor="rotateY">rotateY</label>
-
-              <input
-                id="rotateY"
-                value={rotateY}
-                onChange={onChangeRotateY}
-                type="number"
-              />
-              <br />
-              <label htmlFor="rotateZ">rotateZ</label>
-
-              <input
-                id="rotateZ"
-                value={rotateZ}
-                onChange={onChangeRotateZ}
-                type="number"
-              />
-              <br />
-            </fieldset>
-          </div>
         </ThreeAnimator>
       </ThreeEditFrame>
     </>
@@ -138,7 +153,7 @@ const Mesh = React.memo(
         <mesh
           visible
           userData={{ hello: "world" }}
-          position={[1, 2, 3]}
+          position={[0, 0, 0]}
           rotation={[
             Math.PI / rotationX,
             Math.PI / rotationY,
@@ -146,31 +161,14 @@ const Mesh = React.memo(
           ]}
           onClick={getTargetMesh}
           ref={myMesh}
-          scale={[0.2, 0.2, 0.2]}
+          scale={[1, 1, 1]}
         >
-          <boxGeometry args={[16, 16, 16]} />
-          <meshStandardMaterial color="hotpink" transparent />
+          <boxGeometry args={[1, 0.1, 1]} />
+          <meshStandardMaterial color="blue" transparent />
         </mesh>
       </>
     );
   }
 );
-
-const CreateRotationAnimation = (
-  period,
-  axis = "x",
-  rotateX,
-  rotateY,
-  rotateZ
-) => {
-  const times = [0, period],
-    values = [0, rotateX];
-
-  const trackName = ".rotation[" + axis + "]";
-
-  const track = new NumberKeyframeTrack(trackName, times, values);
-
-  return new AnimationClip("rotateX", period, [track]);
-};
 
 export default ThreeStarter;

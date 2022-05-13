@@ -54,7 +54,7 @@ function App() {
       <Global styles={GlobalCssReset} />
       <BodyWrapper>
         <Heading />
-        <section class="mainWrapper">
+        <section className="mainWrapper">
           <Routes>
             <Route path="/" element={<ThreeStarter />} />
             <Route path="postTest" element={<Posttest />} />

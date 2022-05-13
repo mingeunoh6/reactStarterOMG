@@ -66,11 +66,11 @@ const Heading = () => {
 
   return (
     <Header>
-      <div class="left">
+      <div className="left">
         <h1>OMG TEST</h1>
       </div>
 
-      <div class="center">
+      <div className="center">
         <Link to="/">Home </Link>
         {user.accessToken ? <Link to="/postTest">Post </Link> : null}
         {/* 
@@ -81,7 +81,7 @@ const Heading = () => {
         <Link to="/Builder">Builder </Link>
         <Link to="/Grid">GridTester </Link>
       </div>
-      <div class="right">
+      <div className="right">
         {user.accessToken ? (
           <p onClick={logoutHandler}>Logout</p>
         ) : (
