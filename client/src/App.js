@@ -16,6 +16,7 @@ import Register from "./components/User/Register";
 import Builder from "./routers/Builder";
 import GridLayout from "./testComponents/GridLayout";
 import GlobalCssReset from "./style/global/reset";
+import ThreeWeb from "./routers/ThreeWeb";
 import styled from "@emotion/styled";
 import { css, jsx, ClassName } from "@emotion/react";
 
@@ -27,6 +28,9 @@ const BodyWrapper = styled.div`
   & .mainWrapper {
     align-self: stretch;
     flex-grow: 1;
+    height: 100%;
+    border: 1px solid black;
+    overflow: scroll;
   }
 `;
 
@@ -57,6 +61,7 @@ function App() {
         <section className="mainWrapper">
           <Routes>
             <Route path="/" element={<ThreeStarter />} />
+            <Route path="/threeJS" element={<ThreeWeb />} />
             <Route path="postTest" element={<Posttest />} />
             <Route path="scroll" element={<Scrollcalculator />} />
             <Route path="postList" element={<PostList />} />

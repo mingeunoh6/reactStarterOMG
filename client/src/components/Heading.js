@@ -80,6 +80,7 @@ const Heading = () => {
 
         <Link to="/Builder">Builder </Link>
         <Link to="/Grid">GridTester </Link>
+        <Link to="/threeJS">ThreeJS </Link>
       </div>
       <div className="right">
         {user.accessToken ? (
