@@ -1,9 +1,11 @@
-import React, { useRef, useState, KeyboardEvent } from 'react'
+import React, { useEffect, useRef, useState, KeyboardEvent, useCallback } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import styled from "@emotion/styled";
 import { css, jsx, ClassName } from "@emotion/react";
 import { CanvasWrapper } from '../components/R3f/ThreeStyle';
 import { OrbitControls } from '@react-three/drei';
+import useKeyPress from '../hooks/useKeyPress';
+import { debounce, throttle } from 'lodash';
 
 function Box(props) {
   // This reference gives us direct access to the THREE.Mesh object
@@ -33,10 +35,31 @@ function Box(props) {
 
 
 const ThreeWeb = () => {
-  const handleKeyboardEvent = () => {
-    console.log("hee")
-  }
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  })
+  const keyA = useKeyPress("a");
+  const keyW = useKeyPress("w");
 
+  const handleResize = debounce(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+  }, 1000)
+
+  useEffect(() => {
+    window.addEventListener("keydown", Keyboard);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      //cleanup
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", Keyboard);
+    }
+  }, []);
 
   const Wrapper = styled.div`
   font-size: 15px;
@@ -61,17 +84,21 @@ const ThreeWeb = () => {
   }
 `;
 
-  const controllPosition = (e) => {
-    console.log(e.movementX, e.movementY)
-  }
-
-  const Keyboard = (e) => {
-
-  }
+  const controllPosition = throttle((e) => {
+    console.log(e.movementX, e.movementY, e.clientX - windowSize.width / 2, e.clientY - windowSize.height / 2)
+  }, 200)
 
 
+
+  const Keyboard = useCallback((e) => {
+
+    console.log(keyA, keyW)
+
+  }, [keyA, keyW])
+
+  console.log(`브라우저 화면사이즈  W: ${windowSize.width}, H:${windowSize.width}`)
   return (
-    <CanvasWrapper onMouseMove={controllPosition} onKeyDown={handleKeyboardEvent}>
+    <CanvasWrapper onMouseMove={controllPosition} >
       <Canvas dpr={window.devicePixelRatio} camera={{ fov: 10, near: 0.1, far: 1000, position: [50, 50, 50] }}>
         <color attach="background" args={["#06092c"]} />
         <OrbitControls />

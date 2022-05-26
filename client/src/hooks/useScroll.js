@@ -30,3 +30,4 @@ export function useScroll() {
     scrollDirection,
   };
 }
+export default useScroll;
