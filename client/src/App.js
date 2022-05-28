@@ -61,7 +61,7 @@ function App() {
         <section className="mainWrapper">
           <Routes>
             <Route path="/" element={<ThreeStarter />} />
-            <Route path="/threeJS" element={<ThreeWeb />} />
+            <Route path="/threeJS/:sceneNo" element={<ThreeWeb />} />
             <Route path="postTest" element={<Posttest />} />
             <Route path="scroll" element={<Scrollcalculator />} />
             <Route path="postList" element={<PostList />} />

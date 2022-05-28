@@ -1,19 +1,42 @@
 /** @jsxImportSource @emotion/react */
-
-import React, { useEffect } from "react";
 import styled from "@emotion/styled";
-import { css, jsx, ClassName } from "@emotion/react";
+import { css } from "@emotion/react";
 
-import PropTypes from "prop-types";
-import { Children } from "react";
+
+const dynamicStyle = props =>
+  css`
+    position: ${props.position};
+    color: ${props.color};
+    width: ${props.width};
+    height: ${props.height};
+  `
+
+
+const Wrapper = styled.div`
+  ${dynamicStyle};
+`
 
 const CanvasWrapper = styled.div`
-width: 100%;
- height: 100%;
+${dynamicStyle};
   border: 1px solid blue;
+ 
 `;
 
-export {
-    CanvasWrapper,
+const Inspector = styled.div`
+position: absolute;
+top: 0;
+right: 0;
+color: white;
+z-index: 9999999;
+&> ul{
+  border: 1px solid red;
+}
 
+`
+
+
+
+export {
+  CanvasWrapper,
+  Inspector
 };

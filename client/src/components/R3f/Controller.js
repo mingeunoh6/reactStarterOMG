@@ -58,53 +58,97 @@ const ControllerWrapper = styled.div`
 
 const Controller = () => {
   const [counter, setCounter] = useState(0);
-  const intervalRef = React.useRef(null);
+  const [keyActive, setKeyActive] = useState(false)
+  const intervalRef = useRef(null);
+
+
   useEffect(() => {
+    window.addEventListener("keydown", onControllerDown);
+    window.addEventListener("keyup", keyUp);
+
     onControllerUp();
+    return () => {
+      //cleanup
+      window.removeEventListener("keydown", onControllerDown);
+      window.addEventListener("keyup", keyUp);
+    }
   }, []);
 
-  let controller = false;
+
+
+  const keyDown = (e) => {
+    console.log(e.key)
+    setKeyActive(true)
+
+  }
+
+  const keyUp = (e) => {
+    setKeyActive(false)
+  }
+
   const [forward, setForward] = useState(0);
   const [backward, setBackward] = useState(0);
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(0);
 
-  //   const GoFoward = useCallback(() => {
-  //     console.log("Foward");
-  //   }, []);
-  //   const GoBackward = useCallback(() => {
-  //     console.log("Back");
-  //   }, []);
-  //   const GoLeft = useCallback(() => {
-  //     console.log("left");
-  //   }, []);
-  //   const GoRight = useCallback(() => {
-  //     console.log("Right");
-  //   }, []);
 
   const onControllerDown = (e) => {
+
     if (intervalRef.current) {
       return;
     }
     intervalRef.current = setInterval(() => {
       setCounter((prevCounter) => prevCounter + 1);
 
-      if (e.button == 0 && e.target.id == "goFoward") {
-        setForward((prevForward) => prevForward + 1);
-      } else if (e.button == 0 && e.target.id == "goBackward") {
-        setBackward((prevBackward) => prevBackward + 1);
-      } else if (e.button == 0 && e.target.id == "goLeft") {
-        setLeft((prevLeft) => prevLeft + 1);
-      } else if (e.button == 0 && e.target.id == "goRight") {
-        setRight((prevRight) => prevRight + 1);
+      switch (e.type) {
+        case "mousedown":
+          console.log('mouse')
+          if (e.button == 0 && e.target.id == "goFoward") {
+            setForward((prevForward) => prevForward + 1);
+          } else if (e.button == 0 && e.target.id == "goBackward") {
+            setBackward((prevBackward) => prevBackward + 1);
+          } else if (e.button == 0 && e.target.id == "goLeft") {
+            setLeft((prevLeft) => prevLeft + 1);
+          } else if (e.button == 0 && e.target.id == "goRight") {
+            setRight((prevRight) => prevRight + 1);
+          }
+          break;
+        case "touchstart":
+          console.log('touch')
+          if (e.button == 0 && e.target.id == "goFoward") {
+            setForward((prevForward) => prevForward + 1);
+          } else if (e.button == 0 && e.target.id == "goBackward") {
+            setBackward((prevBackward) => prevBackward + 1);
+          } else if (e.button == 0 && e.target.id == "goLeft") {
+            setLeft((prevLeft) => prevLeft + 1);
+          } else if (e.button == 0 && e.target.id == "goRight") {
+            setRight((prevRight) => prevRight + 1);
+          }
+          break;
+
+        case "keydown":
+          setKeyActive(true)
+          if (e.key === "w") {
+            setForward((prevForward) => prevForward + 1);
+          } else if (e.key === "s") {
+            setBackward((prevBackward) => prevBackward + 1);
+          } else if (e.key === "a") {
+            setLeft((prevLeft) => prevLeft + 1);
+          } else if (e.key === "d") {
+            setRight((prevRight) => prevRight + 1);
+          }
+          break
+        default:
+          break
       }
     }, 10);
-
+    console.log(forward, backward, left, right);
     console.log(intervalRef);
   };
 
-  const onControllerUp = () => {
-    console.log(forward, backward, left, right);
+  const onControllerUp = (e) => {
+
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       setForward(0);
