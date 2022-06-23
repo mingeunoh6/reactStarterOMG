@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 
 import styled from "@emotion/styled";
+import { throttle, debounce } from "lodash";
 
 const ControllerWrapper = styled.div`
   position: absolute;
@@ -56,114 +57,92 @@ const ControllerWrapper = styled.div`
   }
 `;
 
-const Controller = () => {
-  const [counter, setCounter] = useState(0);
+const Controller = (props) => {
   const [keyActive, setKeyActive] = useState(false)
   const intervalRef = useRef(null);
 
 
   useEffect(() => {
     window.addEventListener("keydown", onControllerDown);
-    window.addEventListener("keyup", keyUp);
-
-    onControllerUp();
+    window.addEventListener("keyup", onControllerUp);
     return () => {
       //cleanup
       window.removeEventListener("keydown", onControllerDown);
-      window.addEventListener("keyup", keyUp);
+      window.removeEventListener("keyup", onControllerUp);
     }
   }, []);
 
 
 
-  const keyDown = (e) => {
-    console.log(e.key)
-    setKeyActive(true)
-
-  }
-
-  const keyUp = (e) => {
-    setKeyActive(false)
-  }
-
-  const [forward, setForward] = useState(0);
-  const [backward, setBackward] = useState(0);
-  const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(0);
-
-
   const onControllerDown = (e) => {
+    e.preventDefault()
 
-    if (intervalRef.current) {
-      return;
+    // 입력 타입애 따른 조작 방법 선택
+    switch (e.type) {
+
+      //컴퓨터, 키보드 조작
+      case "keydown":
+        setKeyActive(true)
+
+        if (e.key === "w") {
+          props.forward()
+        } else if (e.key === "s") {
+          props.backward()
+        } else if (e.key === "a") {
+          props.left()
+        } else if (e.key === "d") {
+          props.right()
+        }
+        break
+
+
+      //컴퓨터, 마우스 조작
+      case "mousedown":
+        if (e.button == 0 && e.target.id == "goFoward") {
+          // setForward((prevForward) => prevForward + 1);
+          props.forward()
+        } else if (e.button == 0 && e.target.id == "goBackward") {
+          props.backward()
+        } else if (e.button == 0 && e.target.id == "goLeft") {
+          props.left()
+        } else if (e.button == 0 && e.target.id == "goRight") {
+          props.right()
+        }
+        break;
+
+      //모바일, 터치 조작
+      case "touchstart":
+
+        if (e.button == 0 && e.target.id == "goFoward") {
+          props.forward()
+        } else if (e.button == 0 && e.target.id == "goBackward") {
+          props.backward()
+        } else if (e.button == 0 && e.target.id == "goLeft") {
+          props.left()
+        } else if (e.button == 0 && e.target.id == "goRight") {
+          props.right()
+        }
+        break;
+
+      default:
+        break
     }
-    intervalRef.current = setInterval(() => {
-      setCounter((prevCounter) => prevCounter + 1);
 
-      switch (e.type) {
-        case "mousedown":
-          console.log('mouse')
-          if (e.button == 0 && e.target.id == "goFoward") {
-            setForward((prevForward) => prevForward + 1);
-          } else if (e.button == 0 && e.target.id == "goBackward") {
-            setBackward((prevBackward) => prevBackward + 1);
-          } else if (e.button == 0 && e.target.id == "goLeft") {
-            setLeft((prevLeft) => prevLeft + 1);
-          } else if (e.button == 0 && e.target.id == "goRight") {
-            setRight((prevRight) => prevRight + 1);
-          }
-          break;
-        case "touchstart":
-          console.log('touch')
-          if (e.button == 0 && e.target.id == "goFoward") {
-            setForward((prevForward) => prevForward + 1);
-          } else if (e.button == 0 && e.target.id == "goBackward") {
-            setBackward((prevBackward) => prevBackward + 1);
-          } else if (e.button == 0 && e.target.id == "goLeft") {
-            setLeft((prevLeft) => prevLeft + 1);
-          } else if (e.button == 0 && e.target.id == "goRight") {
-            setRight((prevRight) => prevRight + 1);
-          }
-          break;
-
-        case "keydown":
-          setKeyActive(true)
-          if (e.key === "w") {
-            setForward((prevForward) => prevForward + 1);
-          } else if (e.key === "s") {
-            setBackward((prevBackward) => prevBackward + 1);
-          } else if (e.key === "a") {
-            setLeft((prevLeft) => prevLeft + 1);
-          } else if (e.key === "d") {
-            setRight((prevRight) => prevRight + 1);
-          }
-          break
-        default:
-          break
-      }
-    }, 10);
-    console.log(forward, backward, left, right);
-    console.log(intervalRef);
-  };
+  }
 
   const onControllerUp = (e) => {
 
+  }
 
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      setForward(0);
-      setBackward(0);
-      setLeft(0);
-      setRight(0);
-      intervalRef.current = null;
-    }
-    console.log(intervalRef);
-    console.log(counter);
-  };
+  const handleKeyboardEvent = (e) => {
+    e.preventDefault()
+    console.log(e.key)
+  }
+
 
   return (
     <div>
-      <ControllerWrapper>
+      <ControllerWrapper onKeyPress={handleKeyboardEvent}>
         <div
           id="goFoward"
           className="controlKey goFoward"

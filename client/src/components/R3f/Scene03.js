@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber'
 import MemoizedBox from './objects/basicObject';
 import Controller from './Controller';
@@ -6,9 +6,33 @@ import Controller from './Controller';
 
 
 const Scene03 = (props) => {
+
+
+    const moveForward = () => {
+
+    }
+    const moveBackward = () => {
+
+    }
+    const moveLeft = () => {
+
+    }
+    const moveRight = () => {
+
+    }
+
+    const resetMovement = () => {
+
+    }
+
+    const movePosition = useCallback(() => {
+
+    }, [])
+
+
     return (
         <>
-            <Controller />
+            <Controller move={movePosition} reset={resetMovement} forward={moveForward} backward={moveBackward} left={moveLeft} right={moveRight} />
             <Canvas dpr={window.devicePixelRatio} camera={{ fov: 10, near: 0.1, far: 1000, position: [50, 50, 50] }}>
                 <color attach="background" args={["black"]} />
                 {/* <OrbitControls /> */}
@@ -21,7 +45,6 @@ const Scene03 = (props) => {
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <group rotation={[0, 0, 0]}>
-                    <MemoizedBox />
                     <MemoizedBox position={[1, 1, 1]} />
                 </group>
 
